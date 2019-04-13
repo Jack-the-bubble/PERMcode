@@ -36,7 +36,8 @@ function [energyCenters, Ampmeans, deviations] = featuresPrepare(sound_path, fil
     COGmean = mean(energyCenters);
     COGdev = std(energyCenters);
     energyCenters = (energyCenters - COGmean)/COGdev;
-
+    normCen = linearMap(energyCenters);
+    plot(normCen);
     AmpMean = mean(Ampmeans);
     AmpDev = std(Ampmeans);
     Ampmeans = (Ampmeans - AmpMean)/AmpDev;

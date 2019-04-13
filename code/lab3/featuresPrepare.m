@@ -16,13 +16,13 @@ function [energyCenters, Ampmeans, deviations] = featuresPrepare(sound_path, fil
     % spectrogram(s1, windows, ovrlap, [], Fs, 'yaxis');
 
     % pobranie macierzy transformat Fouriera oraz wektora częstotliwości
-    [s, w] = spectrogram(s1, windows, ovrlap, [], Fs, 'yaxis')
+    [s, w] = spectrogram(s1, windows, ovrlap, [], Fs, 'yaxis');
 
     % Liczenie cech nagrania
     amps = abs(s);
     energyCenters= zeros(windowsNum, 1);
     Ampmeans = zeros(windowsNum, 1);
-    deviations = zeros(windowsNum, 1)
+    deviations = zeros(windowsNum, 1);
     for i = 1:windowsNum
     %     Center of Energy
         energyCenters(i) = sum(w.*(amps(:, i).^2))/sum((amps(:, i).^2));
@@ -36,8 +36,8 @@ function [energyCenters, Ampmeans, deviations] = featuresPrepare(sound_path, fil
     COGmean = mean(energyCenters);
     COGdev = std(energyCenters);
     energyCenters = (energyCenters - COGmean)/COGdev;
-    normCen = linearMap(energyCenters);
-    plot(normCen);
+
+
     AmpMean = mean(Ampmeans);
     AmpDev = std(Ampmeans);
     Ampmeans = (Ampmeans - AmpMean)/AmpDev;

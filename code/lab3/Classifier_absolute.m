@@ -1,33 +1,30 @@
-% classifier - main script
-% recognizes given sample by comparing to average teaching samples
-clear all
-prepare_for_recognition = 1;
-toRec = load('prepared/dwa_6.mat');
+%classifier that compares directly to teaching samples, not averages
 
+% number of teaching samples in each class
+numOfTeach = 4;
+toRec = load('toRec/dwa_8.mat');
 
+errorSum = zeros(numOfTeach, 3);
 
-if prepare_for_recognition == 1
-    teachAverage('raz', 3, 32);
-    teachAverage('dwa', 3, 32);
-    teachAverage('trzy', 3, 32);
-end
-
-
-% check if it belongs to the first class
-base = load('prepared/raz_avg.mat');
-errorSum(1)=calculate_error(toRec, base);
+for i = 1:numOfTeach
+   % check if it belongs to the first class
+base = load(strcat('prepared/raz_', num2str(i),'.mat'));
+errorSum(i, 1)=calculate_error(toRec, base);
 
 % check if it belongs to second class
-base = load('prepared/dwa_avg.mat');
-errorSum(2)=calculate_error(toRec, base);
+base = load(strcat('prepared/dwa_', num2str(i),'.mat'));
+errorSum(i, 2)=calculate_error(toRec, base);
 
 % check if it belongs to third class
-base = load('prepared/trzy_avg.mat');
-errorSum(3)=calculate_error(toRec, base);
+base = load(strcat('prepared/trzy_', num2str(i),'.mat'));
+errorSum(i, 3)=calculate_error(toRec, base);
+    
+    
+end
 
+[minEr, index] = min(min(errorSum));
 
-[minEr, index] = min(errorSum);
-if minEr < 250
+if minEr < 1000
     if index == 1
         disp('raz');
     elseif index == 2
@@ -38,7 +35,6 @@ if minEr < 250
 else
     disp('not recognized');
 end
-
 
 function errorSum = calculate_error(toRec, base)
     figure(1)

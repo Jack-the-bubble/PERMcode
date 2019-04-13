@@ -1,15 +1,16 @@
 % classifier - main script
 % recognizes given sample by comparing to average teaching samples
 clear all
+pocz = 5
 prepare_for_recognition = 1;
-toRec = load('prepared/dwa_6.mat');
+toRec = load('prepared/raz_8.mat');
 
 
 
 if prepare_for_recognition == 1
-    teachAverage('raz', 3, 32);
-    teachAverage('dwa', 3, 32);
-    teachAverage('trzy', 3, 32);
+    teachAverage('raz', pocz, 8, 32);
+    teachAverage('dwa', pocz, 8, 32);
+    teachAverage('trzy', pocz, 8, 32);
 end
 
 

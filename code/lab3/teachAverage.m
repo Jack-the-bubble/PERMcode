@@ -3,12 +3,12 @@
 % samples_num - number of files we want to take average of
 % windows - number of values in each feature type in each sample 
 
-function teachAverage(file_name, samples_num, windows)
+function teachAverage(file_name, pocz, samples_num, windows)
     
     energyCenters = zeros(windows, 1);
     Ampmeans = zeros(windows, 1);
     deviations = zeros(windows, 1);
-    for i = 1:samples_num
+    for i = pocz:samples_num
         l = load(strcat('prepared/', file_name, '_', num2str(i), '.mat'));
         energyCenters = energyCenters+l.energyCenters;
         Ampmeans =Ampmeans + l.Ampmeans;

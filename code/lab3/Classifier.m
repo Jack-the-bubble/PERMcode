@@ -2,8 +2,8 @@
 % recognizes given sample by comparing to average teaching samples
 clear all
 pocz = 1;
-prepare_for_recognition = 0;
-toRec = load('toRec/raz_1.mat');
+prepare_for_recognition = 1;
+toRec = load('toRec/raz_6.mat');
 
 
 
@@ -28,7 +28,7 @@ base = load('prepared/trzy_avg.mat');
 errorSum(3, :)=calculate_error2(toRec, base);
 
 % find rows with smallest value in each column
-[minPom, minCount] = min(errorSum)
+[minPom, minCount] = min(errorSum);
 
 % how many times has each class occured
 p(1) = sum(minCount == 1);
@@ -36,7 +36,7 @@ p(2) = sum(minCount == 2);
 p(3) = sum(minCount == 3);
 
 % find the class that occured most times
-[idx, class]= max(p)
+[idx, class]= max(p);
 
 % check if it is the lone leader and no more classes occured the same
 % amount of times
@@ -44,7 +44,7 @@ check = sum(p == p(class));
 if check > 1
     errVal = 0;
 else
-    errVal =  sum(errorSum(class, :))
+    errVal =  sum(errorSum(class, :));
 end
     
 if errVal< 200 & errVal > 0

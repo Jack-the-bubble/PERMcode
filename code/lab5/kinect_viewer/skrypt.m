@@ -23,41 +23,52 @@ for i = 1: 480
     end
 end
 
-cloud = pointCloud(XYZ);
+cloud = pointCloud(XYZ/1000);
 
-% pcshow(cloud)
+ pcshow(cloud)
 
-[fit, inlier, outlier] = pcfitplane(cloud,40);
+[fit, inlier, outlier] = pcfitplane(cloud,0.04);
 plane1 = select(cloud, inlier);
 remainCloud = select(cloud, outlier);
 % pcshow(plane1)
 pcshow(remainCloud)
 
 % roi = [-200, 50, -200, 100, -inf, inf];
-roi = [-200, 400, -300, 500, -inf, inf];
+roi = [0.1, 0.3, -0.2, 0.1, -inf, inf];
 sampleIndices = findPointsInROI(remainCloud,roi);
 cut_view = select(remainCloud, sampleIndices)
 pcshow(cut_view)
 % roi = [0, 400, -200, 100, -inf, inf];
 [spher, inlsph, outsph] = pcfitsphere(cut_view, 22)
-%  [spher, inlsph, outsph] = pcfitsphere(remainCloud,22)
- cutSphere = select(cut_view, inlsph)
- remainSphere = select(cut_view, outsph)
- 
- 
+cutSphere = select(cut_view, inlsph)
+remainSphere = select(cut_view, outsph)
 pcshow(cutSphere)
-% hold on 
-R=1
-[s_x, s_y, s_z] = sphere()
-base_s(:, :, 1)=s_x*R;
-base_s(:, :, 2)=s_y*R;
-base_s(:, :, 3)=s_z*R;
 
-s_cloud = pointCloud(base_s);
-pcshow(s_cloud)
+pcshow(cloud);
+hold on;
+plot(spher);
 
-pcshow(remainSphere)
 
-[spher2, inlsph2, outsph2] = pcfitsphere(remainSphere,22)
-cutSphere2 = select(remainSphere, inlsph2)
-pcshow(cutSphere2)
+
+
+%  [spher, inlsph, outsph] = pcfitsphere(remainCloud,22)
+%  cutSphere = select(cut_view, inlsph)
+%  remainSphere = select(cut_view, outsph)
+%  
+%  
+% pcshow(cutSphere)
+% % hold on 
+% R=1
+% [s_x, s_y, s_z] = sphere()
+% base_s(:, :, 1)=s_x*R;
+% base_s(:, :, 2)=s_y*R;
+% base_s(:, :, 3)=s_z*R;
+% 
+% s_cloud = pointCloud(base_s);
+% pcshow(s_cloud)
+% 
+% pcshow(remainSphere)
+% 
+% [spher2, inlsph2, outsph2] = pcfitsphere(remainSphere,22)
+% cutSphere2 = select(remainSphere, inlsph2)
+% pcshow(cutSphere2)

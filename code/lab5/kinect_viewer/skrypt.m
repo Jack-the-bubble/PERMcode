@@ -11,35 +11,57 @@ hsv = rgb2hsv(rgb);
 
 XYZ = zeros(480, 640, 3);
 
+
 for i = 1: 480
     for j = 1 : 640
-%         if hsv(i, j, 2) < 0.2
+%         if (hsv(i, j, 2) < 0.1) 
         XYZ(i, j, 3) = D(i, j);
         XYZ(i, j, 1) = (j - cx)*XYZ(i, j, 3)/f; %wyznaczanie wymiaru x
         XYZ(i, j, 2) = (i - cy)*XYZ(i, j, 3)/f; %wyznaczanie wymiaru y
 %         end
     end
 end
+cloud = pointCloud(XYZ/1000, 'Color', hsv);
 
-cloud = pointCloud(XYZ/1000);
-
- %pcshow(cloud)
+%  pcshow(cloud)
 
 [fit, inlier, outlier] = pcfitplane(cloud,0.04);
 plane1 = select(cloud, inlier);
 remainCloud = select(cloud, outlier);
 % pcshow(plane1)
-pcshow(remainCloud)
+% pcshow(remainCloud)
 
-% roi = [-200, 50, -200, 100, -inf, inf];
+% vector_to_isolate = []
+% for i = 1 : size(remainCloud.Location, 1)
+%     if (remainCloud.Location(i, 3) < 1)
+%         vector_to_isolate = [vector_to_isolate; i];
+%     end
+% end
+
+% remainCloud = select(remainCloud, vector_to_isolate);
+% pcshow(remainCloud)
+
+vector_to_isolate = []
+for i = 1 : size(remainCloud.Location, 1)
+    if (remainCloud.Color(i, 3) > 230) && (remainCloud.Color(i, 2) <40) %&& (remainCloud.Color(i, 1) >20)
+        vector_to_isolate = [vector_to_isolate; i];
+    end
+end
+remainCloud = select(remainCloud, vector_to_isolate);
+% pcshow(remainCloud)
+
 roi = [0.1, 0.3, -0.2, 0.1, -inf, inf];
 sampleIndices = findPointsInROI(remainCloud,roi);
 cut_view = select(remainCloud, sampleIndices);
-%pcshow(cut_view)
+% pcshow(cut_view)
 [spher, inlsph, outsph] = pcfitsphere(cut_view, 0.022);
 cutSphere = select(cut_view, inlsph);
 remainSphere = select(cut_view, outsph);
-pcshow(cutSphere);
+% [spher, inlsph, outsph] = pcfitsphere(remainCloud, 0.022);
+% cutSphere = select(remainCloud, inlsph);
+% remainSphere = select(remainCloud, outsph);
+
+% pcshow(cutSphere);
 
 pcshow(cloud);
 hold on;
@@ -48,24 +70,3 @@ plot(spher);
 
 
 
-%  [spher, inlsph, outsph] = pcfitsphere(remainCloud,22)
-%  cutSphere = select(cut_view, inlsph)
-%  remainSphere = select(cut_view, outsph)
-%  
-%  
-% pcshow(cutSphere)
-% % hold on 
-% R=1
-% [s_x, s_y, s_z] = sphere()
-% base_s(:, :, 1)=s_x*R;
-% base_s(:, :, 2)=s_y*R;
-% base_s(:, :, 3)=s_z*R;
-% 
-% s_cloud = pointCloud(base_s);
-% pcshow(s_cloud)
-% 
-% pcshow(remainSphere)
-% 
-% [spher2, inlsph2, outsph2] = pcfitsphere(remainSphere,22)
-% cutSphere2 = select(remainSphere, inlsph2)
-% pcshow(cutSphere2)

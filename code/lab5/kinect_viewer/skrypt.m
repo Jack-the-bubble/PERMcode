@@ -8,8 +8,6 @@ D = double(imread('2019-06-11_10-31-30.066_d.png'));
 rgb = imread('2019-06-11_10-31-30.066_c.png');
 
 hsv = rgb2hsv(rgb);
- 
-% X = (x-cx)*Z/f
 
 XYZ = zeros(480, 640, 3);
 

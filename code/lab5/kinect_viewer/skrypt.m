@@ -1,8 +1,8 @@
 clear all
 % parametry kamery
-f = 525
-cx = 312
-cy = 264
+f = 525;
+cx = 312;
+cy = 264;
 
 D = double(imread('2019-06-11_10-31-30.066_d.png'));
 rgb = imread('2019-06-11_10-31-30.066_c.png');
@@ -23,7 +23,7 @@ end
 
 cloud = pointCloud(XYZ/1000);
 
- pcshow(cloud)
+ %pcshow(cloud)
 
 [fit, inlier, outlier] = pcfitplane(cloud,0.04);
 plane1 = select(cloud, inlier);
@@ -34,13 +34,12 @@ pcshow(remainCloud)
 % roi = [-200, 50, -200, 100, -inf, inf];
 roi = [0.1, 0.3, -0.2, 0.1, -inf, inf];
 sampleIndices = findPointsInROI(remainCloud,roi);
-cut_view = select(remainCloud, sampleIndices)
-pcshow(cut_view)
-% roi = [0, 400, -200, 100, -inf, inf];
-[spher, inlsph, outsph] = pcfitsphere(cut_view, 22)
-cutSphere = select(cut_view, inlsph)
-remainSphere = select(cut_view, outsph)
-pcshow(cutSphere)
+cut_view = select(remainCloud, sampleIndices);
+%pcshow(cut_view)
+[spher, inlsph, outsph] = pcfitsphere(cut_view, 0.022);
+cutSphere = select(cut_view, inlsph);
+remainSphere = select(cut_view, outsph);
+pcshow(cutSphere);
 
 pcshow(cloud);
 hold on;
